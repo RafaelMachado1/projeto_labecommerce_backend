@@ -1,0 +1,37 @@
+// //Create User 
+POST http://localhost:3003/users
+Content-Type: application/json
+
+{
+    "id": "03",
+    "email": "daniel@gmail.com",
+    "password": "123456"
+}
+###
+
+
+
+//Create Product (não estou conseguindo passar o enum)
+POST http://localhost:3003/products
+Content-Type: application/json
+
+{
+    "id": "501",
+    "name": "celular",
+    "price": 900,
+    "category": "Eletrônicos"
+}
+###
+
+// Create Purchase 
+POST http://localhost:3003/purchases
+Authorization: rafael-machado-barbosa
+Content-Type: application/json
+
+{
+    "userId": "01",
+    "productId": "101",
+    "quantity": 1,
+    "totalPrice": 280
+}
+###

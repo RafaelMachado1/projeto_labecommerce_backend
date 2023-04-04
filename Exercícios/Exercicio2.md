@@ -1,20 +1,17 @@
 # Exercício 2
-Agora vamos praticar o método DELETE, criando endpoints para automatizar a manipulação dos dados do arquivo database.ts.
+Mesmo fluxo do exercício 1.
 
-Por enquanto não se preocupe em validar as entradas, foque no caso de sucesso (caminho feliz).
-
-Obs: as alterações feitas nos dados mockados existirão apenas enquanto o servidor estiver de pé. Ao reiniciar o servidor, os dados serão os originais e não incluírão as mudanças.
-
+## Get Products by id
+* validar que o produto existe
+## Get User Purchases by User id
+* validar que o usuário existe
 ## Delete User by id
-* method HTTP (DELETE)
-* path ("/users/:id")
-* response
-    * status 200
-    * "User apagado com sucesso"
+* validar que o usuário existe
 ## Delete Product by id
-* method HTTP (DELETE)
-* path ("/products/:id")
-* response
-    * status 200
-    * "Produto apagado com sucesso"
-Lembre-se de referenciar o material para ordenar as rotas corretamente ;)
+* validar que o produto existe
+## Edit User by id
+* validar que o usuário existe
+* validar o body
+## Edit Product by id
+* validar que o produto existe
+* validar o body

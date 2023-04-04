@@ -1,0 +1,12 @@
+//Delete User by id
+DELETE http://localhost:3003/user/03
+Content-Type: application/json
+
+### 
+
+//Delete Product by id 
+DELETE http://localhost:3003/product/001
+Content-Type: application/json
+
+### 
+
