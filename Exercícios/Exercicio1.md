@@ -1,18 +1,17 @@
 # Exercício 1
-Chegou o momento de modelar o banco de dados do nosso LabECommerce.
+Simularemos um planejamento de API.
+Ainda veremos como conectar o Express com o Banco de dados, então por enquanto desenvolva manualmente as queries que no futuro serão ativadas em cada endpoint.
 
-Para começar, vamos criar o banco de dados em si!
-
-## Criação do BD
-* dentro do pasta src crie a pasta database
-* dentro da pasta src/database, crie os arquivos:
-    * labecommerce.db
-    * labecommerce.sql
-Lembre-se: usaremos o arquivo com extensão .sql para construir nossas queries!
-
-## Adicionar *.db no .gitignore
-* O github não consegue ler e comparar arquivos .db, por isso adicione no arquivo .gitignore uma linha escrita: *.db.
-
-Caso tenha problemas com essa configuração, referencie o material async e/ou pergunte no fórum!
-
-Tudo certo? Bóra criar as tabelas? Dá uma olhada no próximo exercício!
+## Get All Users
+* retorna todos os usuários cadastrados
+## Get All Products
+* retorna todos os produtos cadastrados
+## Search Product by name
+* crie um termo de busca, por exemplo "monitor"
+* retorna o resultado baseado no termo de busca
+## Create User
+* crie um novo usuário
+* insere o item mockado na tabela users
+## Create Product
+* crie um novo produto
+* insere o item mockado na tabela products
