@@ -1,10 +1,16 @@
 # Exercício 1
-Configure seu servidor node com express para que ele inicie com o script de start.
+Vamos continuar criando endpoints para automatizar a manipulação dos dados do arquivo database.ts. Por enquanto não se preocupe em validar as entradas, foque no caso de sucesso (caminho feliz).
 
-## A configuração deve ser desenvolvida no index.ts
-* lembre-se de referenciar o material assíncrono
-## Crie um endpoint de teste
-* method = GET
-* path = "/ping"
-* response = "Pong!"
-* execute o servidor e teste seu endpoint no Postman
+## Get Products by id
+* method HTTP (GET)
+* path ("/products/:id")
+* response
+    * status 200
+    * objeto product encontrado
+## Get User Purchases by User id
+* method HTTP (GET)
+* path ("/users/:id/purchases")
+* response
+    * status 200
+    * array de compras do user procurado
+Lembre-se de referenciar o material para ordenar as rotas corretamente ;)
