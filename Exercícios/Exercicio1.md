@@ -1,24 +1,18 @@
 # Exercício 1
-Hoje nosso foco será refatorar nossos endpoints do Labecommerce e torná-los mais robustos e preparados para lidar com erros.
+Chegou o momento de modelar o banco de dados do nosso LabECommerce.
 
-## Get All Users
-* não precisa de validação, basta refatorar para o uso do try/catch
-## Get All Products
-* não precisa de validação, basta refatorar para o uso do try/catch
-## Search Product by name
-* query params deve possuir pelo menos um caractere
-## Create User
-* validar o body
-* extra:
-    * não deve ser possível criar mais de uma conta com a mesma id
-    * não deve ser possível criar mais de uma conta com o mesmo e-mail
-## Create Product
-* validar o body
-* extra:
-    * não deve ser possível criar mais de um produto com a mesma id
-## Create Purchase
-* validar o body
-* extra:
-    * id do usuário que fez a compra deve existir no array de usuários cadastrados
-    * id do produto que foi comprado deve existir no array de produtos cadastrados
-    * a quantidade e o total da compra devem estar com o cálculo correto
+Para começar, vamos criar o banco de dados em si!
+
+## Criação do BD
+* dentro do pasta src crie a pasta database
+* dentro da pasta src/database, crie os arquivos:
+    * labecommerce.db
+    * labecommerce.sql
+Lembre-se: usaremos o arquivo com extensão .sql para construir nossas queries!
+
+## Adicionar *.db no .gitignore
+* O github não consegue ler e comparar arquivos .db, por isso adicione no arquivo .gitignore uma linha escrita: *.db.
+
+Caso tenha problemas com essa configuração, referencie o material async e/ou pergunte no fórum!
+
+Tudo certo? Bóra criar as tabelas? Dá uma olhada no próximo exercício!
