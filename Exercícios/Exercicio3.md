@@ -1,57 +1,23 @@
 # Exercício 3
-Crie um joguinho simples utilizando os conceitos vistos em aula. Temos alguns exemplos abaixo para auxiliar, você pode escolher um deles ou pensar em outro se quiser! Colocamos uma dica no final desse readme de como gerar números aleatórios no JS.
+Mesmo fluxo do exercício 2.
 
-## par-ou-impar.js
+## Funcionalidades
+Desenvolva uma função para cada funcionalidade.
 
-Crie o arquivo par-ou-impar.js e implemente o famoso joguinho! A funcionalidade é:
+## Product
+* queryProductsByName (busca por produtos baseado em um nome da lista de products)
+    * input: um parâmetro (q)
+        * q é a abreviação de query (termo de busca/consulta)
+    * output: lista de produtos com nomes que contenham o termo de busca
+    * extra: o resultado da busca deve ser case insensitive
+    * exemplo de chamada: queryProductsByName("monitor")
 
-* jogador é você, dev
-
-* suas escolhas devem ser enviadas via argumentos no comando do terminal (process.argv)
-    * par ou impar
-    * e um número
-
-* o adversário é o computador (que faz uma escolha aleatória)
-* exemplos de fluxo:
-    * node par-ou-impar.js par 1
-        * aparece no console: "Você escolheu par e o computador escolheu impar. O resultado foi 6. Você ganhou!"
-    * node par-ou-impar.js impar 3
-        * aparece no console: "Você escolheu impar e o computador escolheu par. O resultado foi 4. Você perdeu!"
-    * node par-ou-impar.js par 2
-        * aparece no console: "Você escolheu par e o computador escolheu impar. O resultado foi 2. Você ganhou!"
-
-
-## pedra-papel-tesoura.js
-Crie o arquivo pedra-papel-tesoura.js e implemente o famoso joguinho! A funcionalidade é:
-
-* jogador é você, dev
-
-* sua escolha deve ser enviada via argumento no comando do terminal (process.argv)
-
-* o adversário é o computador (que faz uma escolha aleatória)
-
-* exemplos de fluxo:
-    * node pedra-papel-tesoura.js pedra
-        * aparece no console: "Você escolheu pedra e o computador escolheu tesoura. Você ganhou!"
-    * node pedra-papel-tesoura.js papel
-        * aparece no console: "Você escolheu papel e o computador escolheu tesoura. Você perdeu!"
-    * node pedra-papel-tesoura.js tesoura
-        * aparece no console: "Você escolheu tesoura e o computador escolheu tesoura. Empate!"
-
-## Dica: como gerar um número aleatório em JS
-Número aleatório entre o valor min e o valor max (incluem ambas extremidades).
-
-```Javascript
-function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) ) + min;
-}
-
-const numeroAleatorioEntreZeroeDez = getRndInteger(0, 10)
-console.log(numeroAleatorioEntreZeroeDez)
-
-const numeroAleatorioEntreUmeNove = getRndInteger(1, 9)
-console.log(numeroAleatorioEntreUmeNove)
-
-const numeroAleatorioEntreDezeQuinze = getRndInteger(10, 15)
-console.log(numeroAleatorioEntreDezeQuinze)
-```
+## Purchase
+* createPurchase (cria uma nova compra na lista de purchases)
+    * input: quatro parâmetros (userId, productId, quantity e totalPrice)
+    * output: frase de sucesso ("Compra realizada com sucesso")
+    * exemplo de chamada: createPurchase("u003", "p004", 2, 1600)
+* getAllPurchasesFromUserId (busca todas as compras feitas baseado no id do usuário)
+    * input: userIdToSearch
+    * output: lista atualizada de compras nas quais o userId delas são do userIdToSearch
+    * exemplo de chamada: getAllPurchasesFromUserId("u003")
