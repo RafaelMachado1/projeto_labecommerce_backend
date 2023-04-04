@@ -1,9 +1,8 @@
 //EXERCÍCIO 1
-
 import { users, products, purchases } from "./database";
 import { TUser, TProduct, TPurchase } from "./types";
-
-  
+import { CATEGORIES } from "./types";
+ 
 //além de importar o express, também precisamos importar os objetos Request
 //e Response, sempre entre chaves {}
 import express, {Request, Response} from 'express';
@@ -110,3 +109,113 @@ app.post("/purchases", (req:Request, res: Response)=>{
   purchases.push(newPurchase)
   res.status(201).send("Compra realizada com sucesso")
 })
+
+
+//--------------------------------------------------------------------------------------
+//  APROFUNDAMENTO EXPRESS
+// EXERCÍCIO 1 
+// Esse tipo de endpoint é utilizado para acessar um recurso específico
+// Get Products by id
+app.get("/products/:id", (req:Request, res: Response)=>{
+    const id = req.params.id
+
+    const result = products.filter((product)=>{
+        return product.id === id       
+    })
+    res.status(200).send(result)
+})
+
+// Get User Purchases by User id
+app.get("/users/:id/purchases", (req:Request, res: Response)=>{
+    const id = req.params.id
+
+    const result = purchases.filter((purchase)=>{
+        return purchase.userId.toLowerCase().includes(id.toLowerCase())
+    })
+    res.status(200).send(result)
+})
+
+
+// EXERCÍCO 2 Agora vamos praticar o método DELETE
+// É utilizado para remover um recurso específico. Também utiliza path params para identificar o item a ser deletado.
+// Delete User by id
+app.delete("/user/:id", (req:Request, res: Response)=>{
+    const id = req.params.id
+
+    const userIndex = users.findIndex((user)=>{
+        return user.id === id
+    })
+
+    if(userIndex >=0){
+        users.splice(userIndex, 1)
+        res.status(200).send("Usuário excluído com sucesso")
+    }else{
+        res.status(404).send("Usuário não encontrado")
+    }
+})
+
+// Delete Product by id
+app.delete("/product/:id", (req:Request, res: Response)=>{
+    const id = req.params.id
+
+    const productIndex = products.findIndex((product)=>{
+        return product.id === id
+    })
+
+    if(productIndex >=0){
+        products.splice(productIndex, 1)
+        res.status(200).send("Produto excluído com sucesso")
+    }else{
+        res.status(404).send("Produto não encontrado")
+    }
+})
+
+
+// EXERCÍCIO 3 Agora vamos praticar o método PUT
+// Esse tipo de endpoint é utilizado para atualizar (editar) um recurso específico já existente.
+// Edit User by id
+app.put("/user/:id", (req:Request, res: Response)=>{
+    const id = req.params.id
+
+    const newId = req.body.id as string | undefined
+    const newEmail = req.body.email as string | undefined
+    const newPassword = req.body.password as string | undefined
+
+    const userToEdit = users.find((user)=>{
+        return user.id === id
+    })
+
+    if(userToEdit){
+        userToEdit.id = newId || userToEdit.id
+        userToEdit.email = newEmail || userToEdit.email
+        userToEdit.password = newPassword || userToEdit.password
+        res.status(200).send("Cadastro atualizado com sucesso")
+    }else{
+        res.status(404).send("Usuário não encontrado")
+    }
+})
+
+// Edit Product by id
+app.put("/product/:id", (req:Request, res: Response)=>{
+    const id = req.params.id
+
+    const newId = req.body.id as string | undefined
+    const newName = req.body.name as string | undefined
+    const newPrice = req.body.price as number | undefined
+    const newCategory = req.body.category as CATEGORIES | undefined
+
+    const product = products.find((product)=>{
+        return product.id === id
+    })
+
+    if(product){
+        product.id = newId || product.id
+        product.name = newName || product.name
+        product.price = isNaN(newPrice) ? product.price : newPrice
+        product.category = newCategory || product.category
+        res.status(200).send("Cadastro atualizado com sucesso")
+    }else{
+        res.status(404).send("Usuário não encontrado")
+    }
+})
+

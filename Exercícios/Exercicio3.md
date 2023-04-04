@@ -1,35 +1,27 @@
 # Exercício 3
-Mesmo fluxo do exercício 2.
+Agora vamos praticar o método PUT, criando endpoints para automatizar a manipulação dos dados do arquivo database.ts.
 
-## Create User
-* method HTTP (POST)
-* path ("/users")
+Por enquanto não se preocupe em validar as entradas, foque no caso de sucesso (caminho feliz).
+
+Obs: as alterações feitas nos dados mockados existirão apenas enquanto o servidor estiver de pé. Ao reiniciar o servidor, os dados serão os originais e não incluírão as mudanças.
+
+## Edit User by id
+* method HTTP (PUT)
+* path ("/users/:id")
 * body
-    * id
-    * email
-    * password
+    * email (parâmetro opcional)
+    * password (parâmetro opcional)
 * response
-    * status 201
-    * "Cadastro realizado com sucesso"
-## Create Product
-* method HTTP (POST)
-* path ("/products")
+    * status 200
+    * "Cadastro atualizado com sucesso"
+## Edit Product by id
+* method HTTP (PUT)
+* path ("/products/:id")
 * body
-    * id
-    * name
-    * price
-    * category
+    * name (parâmetro opcional)
+    * price (parâmetro opcional)
+    * category (parâmetro opcional)
 * response
-    * status 201
-    * "Produto cadastrado com sucesso"
-## Create Purchase
-* method HTTP (POST)
-* path ("/purchases")
-* body
-    * userId
-    * productId
-    * quantity
-    * totalPrice
-* response
-    * status 201
-    * "Compra realizada com sucesso"
+    * status 200
+    * "Produto atualizado com sucesso"
+Lembre-se de referenciar o material para ordenar as rotas corretamente ;)
