@@ -1,30 +1,14 @@
 # Exercício 1
+Hoje vimos alguns usos mais complexos do type e também como declarar enum.
+Vamos refatorar nosso type de product para utilizar enum na propriedade category.
 
-Para iniciar um aplicativo node precisamos configurar suas dependências.
-O objetivo desse exercício é justamente isso:
+## Refatore o type da entidade product no types.ts
+* lembre-se de referenciar o material assíncrono
+* utilize um enum para definir pelo menos 3 categorias (você pode escolher, mas deixamos alguns exemplos abaixo)
+  * ACCESSORIES = "Acessórios",
+  * CLOTHES_AND_SHOES = "Roupas e calçados",
+  * ELECTRONICS = "Eletrônicos"
 
-* criar o package.json
-
-* personalizar as configurações
-
-* criar scripts
-
-Lembrando que ainda veremos ao longo do back-end diversas ferramentas e tecnologias que entrarão como dependências futuramente, ou seja, o package.json será atualizado ao longo das semanas.
-
-# Personalizando o package.json
-
-* Dê um nome para o projeto! Dica: labecommerce-backend (o nome precisa ser kebab-case)
-
-* A versão pode deixar 1.0.0
-
-* O arquivo principal será o index.js
-
-* Adicione a propriedade "type" valendo "module" para conseguir utilizar import e export
-
-* Crie pelo menos o script de start, que executa o arquivo index.js
-
-* Opcional: 
-  * criar palavras-chaves na propriedade "keywords"
-  * colocar seu nome na propriedade "author"
-  * adicionar uma licença
-  * adicionar uma descrição
+## Refatore o mock de products no database.ts
+* com a mudança acima no type, o array de products no database.ts começará a dar erro
+* corrija atribuindo o valor do enum à propriedade category dos objetos
