@@ -1,0 +1,21 @@
+{
+  "name": "projeto-labecommerce-backend",
+  "version": "1.0.0",
+  "description": "Projeto Labecommerce Backend",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js com-bananinha!"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RafaelMachado1/projeto_labecommerce_backend.git"
+  },
+  "author": "Rafael Machado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RafaelMachado1/projeto_labecommerce_backend/issues"
+  },
+  "homepage": "https://github.com/RafaelMachado1/projeto_labecommerce_backend#readme"
+}
