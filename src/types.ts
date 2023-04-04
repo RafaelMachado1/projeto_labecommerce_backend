@@ -1,4 +1,4 @@
-export enum CATEGORIES { //EXERCÍCIO 1
+export enum CATEGORIES { 
     CLOTHES_AND_SHOES = "Roupas e calçados",
     MOVEIS = "Movéis",
     ELETRONICOS =  "Eletrônicos"
