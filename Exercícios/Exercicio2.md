@@ -1,17 +1,11 @@
 # Exercício 2
-Mesmo fluxo do exercício 1.
+Nesse exercício, começaremos a criar e popular as tabelas que armazenarão as informações do sistema do LabECommerce.
 
-## Get Products by id
-* validar que o produto existe
-## Get User Purchases by User id
-* validar que o usuário existe
-## Delete User by id
-* validar que o usuário existe
-## Delete Product by id
-* validar que o produto existe
-## Edit User by id
-* validar que o usuário existe
-* validar o body
-## Edit Product by id
-* validar que o produto existe
-* validar o body
+a) Criação da tabela de pessoas usuárias
+* nome da tabela: users
+* colunas da tabela:
+    * id (TEXT, PK, único e obrigatório)
+    * email (TEXT, único e obrigatório)
+    * password (TEXT e obrigatório)
+b) Populando a tabela de pessoas usuárias
+* popule a tabela com pelo menos 3 users diferentes
