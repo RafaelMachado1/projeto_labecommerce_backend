@@ -1,0 +1,24 @@
+//Edit User by id
+PUT http://localhost:3003/user/02
+Content-Type: application/json
+
+{
+    "id": "02",
+    "email": "bbbbb@gmail.com",
+    "password": "654321"
+}
+
+###
+
+
+//Edit Product by id
+PUT http://localhost:3003/product/001
+Content-Type: application/json
+
+{
+    "id": "001",
+    "name": "Camisa",
+    "price": 150,
+    "category": "CATEGORIES.CLOTHES_AND_SHOES"
+}
+

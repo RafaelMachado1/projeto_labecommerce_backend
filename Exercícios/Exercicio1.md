@@ -1,16 +1,24 @@
 # Exercício 1
-Vamos continuar criando endpoints para automatizar a manipulação dos dados do arquivo database.ts. Por enquanto não se preocupe em validar as entradas, foque no caso de sucesso (caminho feliz).
+Hoje nosso foco será refatorar nossos endpoints do Labecommerce e torná-los mais robustos e preparados para lidar com erros.
 
-## Get Products by id
-* method HTTP (GET)
-* path ("/products/:id")
-* response
-    * status 200
-    * objeto product encontrado
-## Get User Purchases by User id
-* method HTTP (GET)
-* path ("/users/:id/purchases")
-* response
-    * status 200
-    * array de compras do user procurado
-Lembre-se de referenciar o material para ordenar as rotas corretamente ;)
+## Get All Users
+* não precisa de validação, basta refatorar para o uso do try/catch
+## Get All Products
+* não precisa de validação, basta refatorar para o uso do try/catch
+## Search Product by name
+* query params deve possuir pelo menos um caractere
+## Create User
+* validar o body
+* extra:
+    * não deve ser possível criar mais de uma conta com a mesma id
+    * não deve ser possível criar mais de uma conta com o mesmo e-mail
+## Create Product
+* validar o body
+* extra:
+    * não deve ser possível criar mais de um produto com a mesma id
+## Create Purchase
+* validar o body
+* extra:
+    * id do usuário que fez a compra deve existir no array de usuários cadastrados
+    * id do produto que foi comprado deve existir no array de produtos cadastrados
+    * a quantidade e o total da compra devem estar com o cálculo correto
