@@ -1,17 +1,19 @@
 # Exercício 1
-Simularemos um planejamento de API.
-Ainda veremos como conectar o Express com o Banco de dados, então por enquanto desenvolva manualmente as queries que no futuro serão ativadas em cada endpoint.
+Agora que sabemos como implementar relações do tipo 1:m e 1:1, vamos refatorar a estrutura do Labecommerce!
+Por ora não precisaremos editar as tabelas já existentes (users e products). Nosso objetivo hoje é criar a tabela de pedidos (purchases).
+Na próxima aula veremos como criar a lógica para adicionar produtos em uma ordem de pedido.
 
-## Get All Users
-* retorna todos os usuários cadastrados
-## Get All Products
-* retorna todos os produtos cadastrados
-## Search Product by name
-* crie um termo de busca, por exemplo "monitor"
-* retorna o resultado baseado no termo de busca
-## Create User
-* crie um novo usuário
-* insere o item mockado na tabela users
-## Create Product
-* crie um novo produto
-* insere o item mockado na tabela products
+## Criação da tabela de pedidos
+* nome da tabela: purchases
+* colunas da tabela:
+    * id (TEXT, PK, único e obrigatório)
+    * total_price (REAL e obrigatório)
+    * paid (INTEGER e obrigatório)
+    * delivered_at (TEXT e opcional)
+    * buyer_id (TEXT, obrigatório e FK = referencia a coluna id da tabela users)
+## Observações
+A coluna paid será utilizada para guardar uma lógica booleana. O SQLite recomenda o uso do número 0 para false e 1 para true.
+Os pedidos começam com paid valendo 0 (você irá definir isso quando for popular a tabela com o INSERT).
+
+A coluna delivered_at será utilizada para gerenciar a data de entrega do pedido. Ela é opcional, porque sempre começará sem valor ao criar um pedido, ou seja, null.
+O SQLite recomenda utilizar TEXT para lidar com strings no formato ISO8601 "aaaa-mm-dd hh:mm:sss". Lembre-se da existência da função nativa DATETIME para gerar datas nesse formato.

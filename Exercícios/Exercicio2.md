@@ -1,13 +1,10 @@
 # Exercício 2
-Mesmo fluxo do exercício 1.
+Popule sua tabela de pedidos, criada no exercício anterior.
+Por enquanto não se preocupe em adicionar produtos ao pedido, veremos isso na aula que vem.
+Com isso em mente, crie um valor aleatório para o preço total do pedido.
 
-## Get Products by id
-* busca de produtos por id
-## Delete User by id
-* deleção de user por id
-## Delete Product by id
-* deleção de produto por id
-## Edit User by id
-* edição de user por id
-## Edit Product by id
-* edição de produto por id
+## a) Crie dois pedidos para cada usuário cadastrado
+No mínimo 4 no total (ou seja, pelo menos 2 usuários diferentes) e devem iniciar com a data de entrega nula.
+
+## b) Edite o status da data de entrega de um pedido
+Simule que o pedido foi entregue no exato momento da sua edição (ou seja, data atual).
