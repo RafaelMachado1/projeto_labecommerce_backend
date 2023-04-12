@@ -3,7 +3,8 @@ POST http://localhost:3003/users
 Content-Type: application/json
 
 {
-    "id": "03",
+    "id": "u04",
+    "name": "Daniel",
     "email": "daniel@gmail.com",
     "password": "123456"
 }
@@ -16,10 +17,12 @@ POST http://localhost:3003/products
 Content-Type: application/json
 
 {
-    "id": "501",
-    "name": "celular",
+    "id": "p007",
+    "name": "relógio",
     "price": 900,
-    "category": "Eletrônicos"
+    "description": "A prova de água",
+    "category": "Eletrônicos",
+    "image_url": "https://linkaqui"
 }
 ###
 
