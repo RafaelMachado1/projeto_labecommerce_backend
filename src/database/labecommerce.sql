@@ -10,7 +10,6 @@ CREATE TABLE
         created_at TEXT DEFAULT (DATETIME()) NOT NULL
     );
 
-
 INSERT INTO users (id, name, email, password)
 VALUES 
     ('u01', 'Rafael', 'rafael@email.com','123456'),
@@ -34,29 +33,27 @@ UPDATE users SET email = 'rafaelmachado@gmail.com' WHERE id = 'u01';
 SELECT * FROM users ORDER BY email ASC;
 
 
-
-
-
 -- Products ----------------------------------------------------------------------
-
 CREATE TABLE
     products (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
         name TEXT NOT NULL,
         price REAL NOT NULL,
         description TEXT NOT NULL,
-        category TEXT NOT NULL
+        category TEXT NOT NULL,
+        image_url TEXT NOT NULL
     );
+DROP TABLE products;
 
 INSERT INTO
-    products (id, name, price, description, category)
+    products (id, name, price, description, category, image_url)
     VALUES  
-        ('p001','tablet', 2120, 'Com processador Snapdragon 888', 'eletrônicos'), 
-        ('p002', 'cadeira', 280,'Articulada para praia', 'móveis'), 
-        ('p003', 'celular', 1900, 'Com processador Snapdragon 888 ', 'eletrônicos'), 
-        ('p004', 'camisa', 120, '100% Algodão', 'Roupas e calçados'), 
-        ('p005', 'mesa', 2500, 'Redonda de madeira de lei', 'móveis'),
-        ('p006', 'sapato', 150, 'Em couro legítimo', 'Roupas e calçados');
+        ('p001','tablet', 2120, 'Com processador Snapdragon 888', 'eletrônicos', 'https://th.bing.com/th/id/OIP.1W1x7YUlXu-YmxypdNeuVAHaE8?pid=ImgDet&rs=1'), 
+        ('p002', 'cadeira', 280,'Articulada para praia', 'móveis', ' https://th.bing.com/th/id/OIP.v7xT9Bm_DPBKc6KlKi_MpgHaHa?pid=ImgDet&rs=1'), 
+        ('p003', 'celular', 1900, 'Com processador Snapdragon 888 ', 'eletrônicos', 'https://th.bing.com/th/id/R.f72986038232a9f0728787b2f499c3f5?rik=5%2bjbfLKSBoQ4Lg&pid=ImgRaw&r=0'), 
+        ('p004', 'camisa', 120, '100% Algodão', 'Roupas e calçados','https://decathlonpro.vtexassets.com/arquivos/ids/9132191-588-752/bl-ski-500-1-2-zip-top-m-dark-grey-xs-azul-pp1.jpg?v=637829632787530000'), 
+        ('p005', 'mesa', 2500, 'Redonda de madeira de lei', 'móveis', 'https://th.bing.com/th/id/OIP.D5-5RjVlDliRCSjtoQxVJwHaFN?pid=ImgDet&rs=1'),
+        ('p006', 'sapato', 150, 'Em couro legítimo', 'Roupas e calçados', 'https://th.bing.com/th/id/OIP.fzPtFwJQrtG4MxG5GjBsRAHaHQ?pid=ImgDet&rs=1');
 
 -- Get All Products
 SELECT * FROM products;
@@ -65,7 +62,6 @@ SELECT * FROM products;
 -- (retorna o resultado ordenado pela coluna price em ordem crescente)
 -- (limite o resultado em 20 iniciando pelo primeiro item)
 SELECT * FROM products ORDER BY price ASC LIMIT 20 OFFSET 0;
-
 
 -- Get All Products versão 2 REFATORADO
 -- (mocke um intervalo de preços, por exemplo entre 100.00 e 300.00)
@@ -90,46 +86,7 @@ DELETE FROM products WHERE id = 'p007';
 -- Edit Product by id
 UPDATE products SET price = 1990 WHERE id = 'p001';
 
-
-
-
--- EXERCÍCIO 2 APROFUNDAMENTO SQL
--- Get Products by id
-SELECT * FROM products WHERE id = 'p001';
-
--- Delete User by i
-DELETE FROM users WHERE id = '04';
-
--- Delete Product by id
-DELETE FROM products WHERE id = 'p07';
-
--- Edit User by id
-UPDATE users SET email = 'fulaninho@email.com' WHERE id = 'u03';
-
--- Edit Product by id
-UPDATE products SET price = 1500.0 WHERE id = 'p005';
-
-
--- EXERCÍCIO 3 APROFUNDAMENTO SQL
--- Get All Users REFATORADO (retorna o resultado ordenado pela coluna email em ordem crescente)
-SELECT * FROM users ORDER BY email ASC;
-
--- Get All Products versão 1 REFATORADO
--- (retorna o resultado ordenado pela coluna price em ordem crescente)
--- (limite o resultado em 20 iniciando pelo primeiro item)
-SELECT * FROM products ORDER BY price ASC LIMIT 20 OFFSET 0;
-
--- Get All Products versão 2 REFATORADO
--- (mocke um intervalo de preços, por exemplo entre 100.00 e 300.00)
--- (retorna os produtos com preços dentro do intervalo mockado em ordem crescente)
-SELECT * FROM products
-WHERE price >= 100 AND price <= 500
-ORDER BY price ASC;
-
-
 -- Purchases ----------------------------------------------------------
-
--- Criação da tabela de pedidos
 CREATE TABLE purchases(
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     total_price REAL UNIQUE NOT NULL,
@@ -139,17 +96,22 @@ CREATE TABLE purchases(
     FOREIGN KEY (buyer_id) REFERENCES users(id) --buyer_id (TEXT, obrigatório e FK = referencia a coluna id da tabela users)
 );
 
+DROP TABLE purchases;
 
-INSERT INTO purchases(id, total_price, paid, buyer_id)
+INSERT INTO purchases(id, buyer_id, total_price, paid)
 VALUES
-    ('b001', 2120, 0, 'u01'),
-    ('b002', 280, 0, 'u01'),
-    ('b003', 1900, 0, 'u02'),
-    ('b004', 120, 0,'u02');
+    ('b001', 'u01', 259.80, 0),
+    ('b002', 'u01', 899, 0),
+    ('b003', 'u02', 400, 0),
+    ('b004', 'u02', 3489, 0)
+;
 
   SELECT * FROM purchases;  
 
-  UPDATE purchases 
+SELECT * FROM purchases
+WHERE buyer_id = 'u01';
+
+UPDATE purchases 
 SET delivered_at = DATETIME ('NOW')
 WHERE buyer_id = 'u01';
 
