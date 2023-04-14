@@ -89,11 +89,11 @@ UPDATE products SET price = 1990 WHERE id = 'p001';
 -- Purchases ----------------------------------------------------------
 CREATE TABLE purchases(
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    total_price REAL UNIQUE NOT NULL,
-    paid INTEGER NOT NULL,
-    delivered_at TEXT,
     buyer_id TEXT NOT NULL,
-    FOREIGN KEY (buyer_id) REFERENCES users(id) --buyer_id (TEXT, obrigatório e FK = referencia a coluna id da tabela users)
+    total_price REAL NOT NULL,
+    created_at TEXT DEFAULT (DATETIME()) NOT NULL,
+    paid INTEGER DEFAULT (0) NOT NULL,
+    FOREIGN KEY (buyer_id) REFERENCES users(id)
 );
 
 DROP TABLE purchases;
@@ -125,6 +125,20 @@ INNER JOIN users
 ON purchases.buyer_id = users.id
 WHERE buyer_id = 'u01';
 
+SELECT 
+    purchases.id AS purchaseId,
+    purchases.total_price AS totalPrice,
+    purchases.created_at AS createdAt,
+    purchases.paid AS isPaid,
+    users.id AS buyerId,
+    users.email AS email,
+    users.name AS name
+FROM purchases
+INNER JOIN users
+ON purchases.buyer_id = users.id
+WHERE purchases.id = 'b002';
+
+
 
 -- purchase_products ----------------------------------------------
 
@@ -135,6 +149,8 @@ CREATE TABLE purchases_products(
     FOREIGN KEY (purchase_id) REFERENCES purchases(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+DROP TABLE purchases_products;
 
 INSERT INTO purchases_products(purchase_id, product_id, quantity)
 VALUES
