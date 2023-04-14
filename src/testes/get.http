@@ -10,21 +10,26 @@ Content-Type: application/json
 
 
 // Get Search Product by name (está buscando por id !!!!!)
-GET http://localhost:3003/products/search
+GET http://localhost:3003/products/search?name=tablet
 Content-Type: application/json
 
 ###
 
 
 //Get Products by id 
-GET http://localhost:3003/products/p002
+GET http://localhost:3003/products/p003
 Content-Type: application/json
 
 ###
 
 
+GET http://localhost:3003/users/u01/purchases
+Content-Type: application/json
+
+###
+
 //Get User Purchases by User id
-GET http://localhost:3003/users/02/purchases
+GET http://localhost:3003/purchases/b002
 Content-Type: application/json
 
 ###

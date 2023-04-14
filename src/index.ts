@@ -19,12 +19,12 @@ app.get('/ping', (req: Request, res: Response)=>{
 })
 
 
-//Get All Users -> (obter todos os usuários)  REFATORADO
+//Get All Users -> (obter todos os usuários)  REFATORADO com a query builder
 //Este endpoint serve para acessar os dados gerais de todos os usuários cadastrados. 
 // Nos dados estão incluidos: id,name, email, password e data/hora.
 app.get("/users", async (req: Request, res: Response) => {
     try {
-        const result = await db.raw(`SELECT * FROM users;`)
+        const result = await db("users") as string
 
         res.status(200).send(result)
 
@@ -42,12 +42,13 @@ app.get("/users", async (req: Request, res: Response) => {
     }
 })
 
-//Get All Products -> (obter todos os produtos) REFATORADO
+//Get All Products -> (obter todos os produtos) REFATORADO coma query builder
 //Este endpoint serve para acessar os dados gerais de todos os produtos cadastrados. 
 // Nos dados estão incluidos: id, name, price, description, category e image_url.
 app.get('/products', async (req: Request, res: Response) => {
     try {
-        const result = await db.raw(`SELECT *FROM products;`)
+        const result = await db("products") as string
+
         res.status(200).send(result)
     } catch (error: any) {
         console.log(error)
@@ -64,17 +65,14 @@ app.get('/products', async (req: Request, res: Response) => {
 })
 
 
-//Get All Products Search Product by name -> (obter todos os produtos de pesquisa de produtos por nome)
+//Get All Products Search Product by name -> (obter todos os produtos de pesquisa de produtos por nome) REFATORADO coma query builder
 //Este endpoint serve para acessar os dados gerais do produto cadastrado pelo nome do produto.
 // Nos dados estão incluidos: id, name, price, category.
-app.get("/product/search", async (req: Request, res: Response) => {
+app.get("/products/search", async (req: Request, res: Response) => {
     try {
         const name = req.query.name as string
-
-        const [result] = await db.raw(`
-        SELECT * FROM products 
-        WHERE name = "${name}";
-    `)
+        console.log(name)
+        const [result] = await db("products").where("name", "LIKE", `%${name}%`)
         
         if(!result){
         res.status(400)
@@ -106,7 +104,7 @@ app.get("/product/search", async (req: Request, res: Response) => {
 })
 
 
-//Post Create User -> (Publicar, criar usuário)
+//Post Create User -> (Publicar, criar usuário) REFATORADO coma query builder
 // Este endpoint serve para criar um usuário novo.
 // precisa ser passado os dados: id, email, password. 
 app.post("/users", async (req: Request, res: Response) => {
@@ -127,22 +125,21 @@ app.post("/users", async (req: Request, res: Response) => {
             throw new Error("Dados inválidos, precisam ter no mínimo 1 caracter.");
         }
 
-        const [user] = await db.raw(`
-            SELECT * FROM users
-			    WHERE id = "${id}"
-                OR email = "${email}"
-            ;
-        `)
+        const [user] = await db("users").where({id: id}).orWhere({email: email})
 
         if(user){
             res.status(400)
             throw new Error("'id' ou 'email' já existente no cadastro");
             
         } else{
-            await db.raw(`
-            INSERT INTO users(id, name, email, password)
-            VALUES("${id}", "${name}", "${email}", "${password}");
-        `)
+
+            const newUser = {
+                id,
+                name,
+                email,
+                password
+            }
+            await db("users").insert(newUser)
         }
 
         res.status(201).send("Cadastro realizado com sucesso")
@@ -164,13 +161,13 @@ app.post("/users", async (req: Request, res: Response) => {
 
 
 
-//Post Create Product  -> (Publicar, criar produto)
+//Post Create Product  -> (Publicar, criar produto) REFATORADO com a query builder
 // Este endpoint serve para criar um usuário produto.
 // precisa ser passado os dados: id, name, price, category. 
 //Create Product - REFATORADO
 app.post("/products", async (req: Request, res: Response) => {
     try {
-        const { id, name, price, description, category, image_url} = req.body
+        const { id, name, price, description, category, image_url} = req.body as TProduct
 
         if (
             typeof id !== 'string' || 
@@ -205,19 +202,21 @@ app.post("/products", async (req: Request, res: Response) => {
             throw new Error("Dados inválidos, precisam ter no mínimo 1 caracter.");
         }
 
-        const [product] = await db.raw(`
-            SELECT * FROM products
-			    WHERE id = "${id}"
-            ;
-        `)
+        const [product] = await db("products").where({id: id})
 
         if (product) {
             res.status(400)
             throw new Error("'id' já existente no cadastro")
         } else {
-            await db.raw(`
-            INSERT INTO products (id, name, price, description, category, image_url)
-            VALUES ("${id}", "${name}", "${price}", "${description}", "${category}", "${image_url}");`)
+            const newProduct = {
+                id,
+                name,
+                price,
+                description,
+                category,
+                image_url
+            }
+            await db("products").insert(newProduct)
         }
 
         res.status(201).send("Produto cadastrado com sucesso")
@@ -232,7 +231,9 @@ app.post("/products", async (req: Request, res: Response) => {
     }
 })
 
-//Create Purchase -> (criar compra)
+
+
+//Create Purchase -> (criar compra) REFATORADO com a query builder
 // Este endpoint serve para criar uma nova compra.
 // precisa ser passado no body os dados da compra: userId, productId, quantity, totalPrice.
  //Create Purchase - INCOMPLETO, falta validação de erro se o id informado é cadastrado ou não.
@@ -246,30 +247,32 @@ app.post("/purchases", async (req: Request, res: Response) => {
             res.status(400)
             throw new Error("O dado inserido deve ser uma string")
         }
-        
+
+                
         if (typeof total_price !== "number" ||
             typeof paid !== "number") {
             res.status(400)
             throw new Error("O dado inserido deve ser um número")
         }
-        
-        const [userId] = await db.raw(`
-            SELECT * FROM users
-            WHERE id = ${buyer_id};
-        `)
 
-        if (userId) {
-            await db.raw(`
-            INSERT INTO purchases (id, buyer_id, total_price, paid)
-            VALUES ("${id}","${buyer_id}","${total_price}","${paid}")
-        ;`)
-            
-        } else {
-            res.status(400)
-            throw new Error("Usuário não cadastrado, 'id' não encontrada")
-        }
+        const [userId] = await db("users").where({id: buyer_id})
         
-        res.status(201).send("Compra realizada com sucesso")
+        if (!userId) {
+            res.status(400)
+            throw new Error("Usuário não cadastrado, 'id' não encontrada")  
+        } 
+        
+        const newPurchase ={
+            id,
+            buyer_id,
+            total_price
+        }
+        await db("purchases").update(newPurchase).where({id})
+        res.status(201).send({
+            message: "Compra realizada com sucesso",
+            purchase: newPurchase
+        })
+    
 
     } catch (error: any) {
         console.log(error)
@@ -282,7 +285,7 @@ app.post("/purchases", async (req: Request, res: Response) => {
 })
 
 
-//Get Products by id  (obter produtos por ID)
+//Get Products by id  (obter produtos por ID) REFATORADO coma query builder
 // Este endpoint serve para burcar um produto pelo seu ID.
 // Nos dados retornados estão incluidos: id, name, price, category.
 //Get Products by id - REFATORADO
@@ -290,10 +293,7 @@ app.get("/products/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const [result] = await db.raw(`
-        SELECT * FROM products
-        WHERE id = "${id}"
-        `)
+        const [result] = await db("products").where({id: id})
 
         if (!result) {
             res.status(400)
@@ -312,7 +312,7 @@ app.get("/products/:id", async (req: Request, res: Response) => {
 
 })
 
-//Get User Purchases by User id -> (Obter compras do usuário por ID do usuário)
+//Get User Purchases by User id -> (Obter compras do usuário por ID do usuário) REFATORADO coma query builder
 // Este endpoint serve para obter as compras do usuário através do ID do usuário
 // Nos dados retornados estão: ID do usuário, ID do produto, quantidade comprada e preço total.
 //Get User Purchases by User id 
@@ -320,20 +320,21 @@ app.get("/users/:id/purchases", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const [idUser] = await db.raw(`
-        SELECT * FROM users
-        WHERE id = "${id}"
-        `)
+        const [idUser] = await db("users").where({id: id})
         
         if (!idUser) {
             res.status(400)
             throw new Error("Usuário não cadastrado")
         }
 
-        const [result] = await db.raw(`
-            SELECT * FROM purchases
-            WHERE buyer_id = ${id};
-        `)
+        const [result] = await db("purchases").select(
+            "*"  
+          ).innerJoin(
+              "users",
+              "purchases.buyer_id",
+              "=",
+              "users.id"
+          ).where({"users.id": id})
 
         if (!result) {
             res.status(400)
@@ -353,28 +354,24 @@ app.get("/users/:id/purchases", async (req: Request, res: Response) => {
 
 
 
-//Delete User by id -> (excluir usuário por ID)
+//Delete User by id -> (excluir usuário por ID) REFATORADO com a query builder
 // Este endpoint serve para deletar o usuário através do seu Id
 //Delete User by id - ok
-app.delete("/user/:id", (req: Request, res: Response) => {
+app.delete("/user/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const idUser = users.find((user) => user.id === id)
+        const [idUser] = await db("users").where({id: id})
 
         if (!idUser) {
+            res.status(404)
             throw new Error("Usuário não cadastrado")
         }
 
-        const userIndex = users.findIndex((user) => {
-            return user.id === id
-        })
+        await db("users").del().where({id: id})
 
-        if (userIndex >= 0) {
-            users.splice(userIndex, 1)
-            res.status(200).send("Usuário excluído com sucesso")
-        }
-
+        res.status(200).send("Usuário excluído com sucesso")
+        
     } catch (error: any) {
         console.log(error)
 
@@ -388,27 +385,22 @@ app.delete("/user/:id", (req: Request, res: Response) => {
 
 
 
-//Delete Product by id  -> (Excluir produto por ID)
+//Delete Product by id  -> (Excluir produto por ID) REFATORADO com a query builder
 // Este endpoint serve para deletar o produto através do seu Id
-app.delete("/product/:id", (req: Request, res: Response) => {
+app.delete("/product/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const idProduct = products.find((product) => product.id === id)
+        const [idProduct] = await db("products").where({id: id})
 
         if (!idProduct) {
             throw new Error("Produto não cadastrado")
         }
 
-        const productIndex = products.findIndex((product) => {
-            return product.id === id
-        })
+        await db("products").del().where({id: id})
 
-        if (productIndex >= 0) {
-            products.splice(productIndex, 1)
-            res.status(200).send("Produto excluído com sucesso")
-        }
-
+        res.status(200).send("Produto excluído com sucesso")
+        
     } catch (error: any) {
         console.log(error)
 
@@ -421,16 +413,17 @@ app.delete("/product/:id", (req: Request, res: Response) => {
 })
 
 
-//Edit User by id  -> (Editar usuário por ID)
+//Edit User by id  -> (Editar usuário por ID) REFATORADO com a query builder
 // Este endpoint serve para editar o usuário. A busca é feita através do ID
 // os dados que podem ser alterados no body são: Id, email, password
-app.put("/user/:id", (req: Request, res: Response) => {
+app.put("/user/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const newId = req.body.id
-        const newEmail = req.body.email
-        const newPassword = req.body.password
+        const newId = req.body.id as string | undefined
+        const newName = req.body.name as string | undefined
+        const newEmail = req.body.email as string | undefined
+        const newPassword = req.body.password as string | undefined
 
         if (newId !== undefined) {
             if (typeof newId !== 'string') {
@@ -439,6 +432,13 @@ app.put("/user/:id", (req: Request, res: Response) => {
             }
         }
 
+        if (newName !== undefined) {
+            if (typeof newName !== 'string') {
+                res.status(400)
+                throw new Error("'id' deve ser uma string");
+            }
+        }
+        
         if (newEmail !== undefined) {
             if (typeof newEmail !== 'string') {
                 res.status(400)
@@ -453,20 +453,21 @@ app.put("/user/:id", (req: Request, res: Response) => {
             }
         }
 
-        const userToEdit = users.find((user) => {
-            return user.id === id
-        })
+        const [userToEdit] = await db("users").where({id: id})
 
         if (!userToEdit) {
-            res.status(400)
+            res.status(404)
             throw new Error("Usuário não cadastrado")
+        } else {
+            const updateUser = {
+                id: newId || userToEdit.id,
+                name: newName || userToEdit.name,
+                email: newEmail || userToEdit.email,
+                password: newPassword || userToEdit.password
+            }
+            await db("users").update(updateUser).where({id: id})
         }
 
-        if (userToEdit) {
-            userToEdit.id = newId || userToEdit.id
-            userToEdit.email = newEmail || userToEdit.email
-            userToEdit.password = newPassword || userToEdit.password
-        }
         res.status(200).send("Atualização realizada com sucesso")
 
     } catch (error: any) {
@@ -481,17 +482,19 @@ app.put("/user/:id", (req: Request, res: Response) => {
 })
 
 
-//Edit Product by id -> (Editar produto por ID)
+//Edit Product by id -> (Editar produto por ID) REFATORADO com a query builder
 // Este endpoint serve para editar o produto. A busca é feita através do ID
 // os dados que podem ser alterados no body são: Id, name, price, category
-app.put("/product/:id", (req: Request, res: Response) => {
+app.put("/product/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const newId = req.body.id 
-        const newName = req.body.name 
-        const newPrice = req.body.price 
-        const newCategory = req.body.category 
+        const newId = req.body.id as string | undefined
+        const newName = req.body.name as string | undefined
+        const newPrice = req.body.price as number | undefined
+        const newDescription = req.body.description as string | undefined
+        const newCategory = req.body.category as CATEGORIES | undefined
+        const newImage = req.body.image_url as string | undefined
 
         if (newId !== undefined) {
             if (typeof newId !== 'string') {
@@ -513,6 +516,14 @@ app.put("/product/:id", (req: Request, res: Response) => {
                 throw new Error("'price' deve ser uma string");
             }
         }
+
+        if (newDescription !== undefined) {
+            if (typeof newDescription !== 'string') {
+                res.status(400)
+                throw new Error("'description' deve ser uma string");
+            }
+        }
+
         if(newCategory !== undefined){
             if (
                 newCategory !== CATEGORIES.CLOTHES_AND_SHOES &&
@@ -524,23 +535,25 @@ app.put("/product/:id", (req: Request, res: Response) => {
             }
         }
         
-        const product = products.find((product) => {
-            return product.id === id
-        })
+        const [product] = await db("products").where({id:id})
 
         if (!product) {
-            res.status(400)
+            res.status(404)
             throw new Error("Produto não cadastrado")
+        } else {
+            const updateProduct: TProduct = {
+                id: newId || product.id,
+                name: newName || product.name,
+                price: isNaN(newPrice) ? product.price : newPrice,
+                description: newDescription || product.description,
+                category: newCategory || product.category,
+                image_url: newImage || product.image_url
+            }
+            await db("products").update(updateProduct).where({id:id})
         }
 
-        if (product) {
-            product.id = newId || product.id
-            product.name = newName || product.name
-            product.price = isNaN(newPrice) ? product.price : newPrice
-            product.category = newCategory || product.category
-            
-        } 
-        res.status(200).send("Cadastro atualizado com sucesso")
+        res.status(200).send("Atualização realizada com sucesso")
+
 
     } catch (error: any) {
         console.log(error)
@@ -553,3 +566,63 @@ app.put("/product/:id", (req: Request, res: Response) => {
 
 })
 
+
+//Get Purchase by id
+app.get("/purchases/:id", async (req: Request, res: Response)=>{
+    try {
+        const id = req.params.id
+        const [idPurchase] = await db("purchases").where({id: id})
+
+        if(!idPurchase){
+            res.status(400)
+            throw new Error("Compra não localizada")
+        } 
+        
+        const [purchase] = await db("purchases").select(
+            "purchases.id AS compra_Id",
+            "purchases.total_price AS totalPrice",
+            "purchases.created_at AS dataHoraCompra",
+            "purchases.paid AS taPago",
+            "users.id AS idComprador",
+            "users.email AS email",
+            "users.name AS name"
+        ).innerJoin(
+            "users",
+            "purchases.buyer_id",
+            "=",
+            "users.id"
+        ).where({"purchases.id": id})
+
+        const purchaseTotal = await db("purchases_products").select(
+            "products.id",
+            "products.name",
+            "products.price",
+            "products.description",
+            "products.image_url",
+            "purchases_products.quantity"
+        ).innerJoin(
+            "products",
+            "purchases_products.product_id",
+            "=",
+            "products.id"
+        ).where({purchase_id: id})
+
+
+        const result = {...purchase, isPaid: purchase.isPaid === 0? false: true, productList: purchaseTotal}
+        
+        res.status(200).send(result)
+        
+    } catch (error) {
+        console.log(error)
+
+        if (req.statusCode === 200) {
+            res.status(500)
+        }
+
+        if (error instanceof Error) {
+            res.send(error.message)
+        } else {
+            res.send("Erro inesperado")
+        }
+    }
+})

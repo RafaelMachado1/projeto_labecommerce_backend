@@ -3,9 +3,9 @@ POST http://localhost:3003/users
 Content-Type: application/json
 
 {
-    "id": "u04",
-    "name": "Daniel",
-    "email": "daniel@gmail.com",
+    "id": "u06",
+    "name": "Davi",
+    "email": "davi@gmail.com",
     "password": "123456"
 }
 ###
@@ -28,7 +28,6 @@ Content-Type: application/json
 
 // Create Purchase 
 POST http://localhost:3003/purchases
-Authorization: rafael-machado-barbosa
 Content-Type: application/json
 
 {
