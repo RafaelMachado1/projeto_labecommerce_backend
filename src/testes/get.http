@@ -1,35 +1,27 @@
-// Get All Users -> todos os usuários
+//Get All Users 
+//Este endpoint serve para acessar os dados gerais de todos os usuários cadastrados. 
 GET http://localhost:3003/users
 Content-Type: application/json
 ###
 
-// Get All Products -> todos os produtos
+//Get All Products funcionalidade 1 
+//Este endpoint serve para acessar os dados gerais de todos os produtos cadastrados.
 GET http://localhost:3003/products/
 Content-Type: application/json
 ###
 
 
-// Get Search Product by name (está buscando por id !!!!!)
-GET http://localhost:3003/products/search?name=tablet
+//Get All Products Search funcionalidade 2
+//Este endpoint serve para acessar os dados gerais do produto cadastrado pelo nome do produto.
+GET http://localhost:3003/products/search?q=celular
 Content-Type: application/json
 
 ###
 
-
-//Get Products by id 
-GET http://localhost:3003/products/p003
+//Get Purchase by id
+//Este endpoint serve para buscar o pedido através do id do pedido 
+GET http://localhost:3003/purchases/b001
 Content-Type: application/json
 
 ###
 
-
-GET http://localhost:3003/users/u01/purchases
-Content-Type: application/json
-
-###
-
-//Get User Purchases by User id
-GET http://localhost:3003/purchases/b002
-Content-Type: application/json
-
-###

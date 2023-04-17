@@ -16,7 +16,6 @@ export type TProduct = {
     name: string,
     price: number,
     description: string,
-    category: CATEGORIES,
     image_url: string
 }
 
