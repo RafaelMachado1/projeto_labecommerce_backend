@@ -1,24 +1,14 @@
-//Edit User by id
-PUT http://localhost:3003/user/02
+//Edit Product by id 
+// Este endpoint serve para editar os dados do produto através do seu id 
+PUT http://localhost:3003/products/p001
 Content-Type: application/json
 
 {
-    "id": "02",
-    "email": "bbbbb@gmail.com",
-    "password": "654321"
-}
-
+    "id": "p001",
+    "name": "tablet",
+    "price": 5000,
+    "description": "Com processador Snapdragon 888",
+    "image_url": "https://th.bing.com/th/id/OIP.1W1x7YUlXu-YmxypdNeuVAHaE8?pid=ImgDet&rs=1"
+  }
 ###
-
-
-//Edit Product by id
-PUT http://localhost:3003/product/001
-Content-Type: application/json
-
-{
-    "id": "001",
-    "name": "Camisa",
-    "price": 150,
-    "category": "CATEGORIES.CLOTHES_AND_SHOES"
-}
 
